@@ -4,6 +4,9 @@ import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import net.simplifiedcoding.data.db.schemas.CommentTable
+import net.simplifiedcoding.data.db.schemas.LikeTable
+import net.simplifiedcoding.data.db.schemas.StoryTable
 import net.simplifiedcoding.data.db.schemas.UserTable
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
@@ -11,10 +14,13 @@ import org.jetbrains.exposed.sql.transactions.transaction
 
 object DatabaseFactory {
 
-    fun init(){
+    fun init() {
         Database.connect(hikari())
         transaction {
             SchemaUtils.create(UserTable)
+            SchemaUtils.create(StoryTable)
+            SchemaUtils.create(LikeTable)
+            SchemaUtils.create(CommentTable)
         }
     }
 

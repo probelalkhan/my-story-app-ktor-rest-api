@@ -1,0 +1,39 @@
+package net.simplifiedcoding.data.repository.story
+
+import net.simplifiedcoding.base.BaseResponse
+import net.simplifiedcoding.config.GENERIC_ERROR
+import net.simplifiedcoding.config.SUCCESS
+import net.simplifiedcoding.data.service.story.StoryService
+import net.simplifiedcoding.routes.story.StoryParams
+
+class StoryRepositoryImpl(
+    private val storyService: StoryService
+) : StoryRepository {
+    override suspend fun add(storyParams: StoryParams): BaseResponse<Any> {
+        val story = storyService.add(storyParams)
+        return if (story != null) {
+            BaseResponse.SuccessResponse(data = story, message = SUCCESS)
+        } else {
+            BaseResponse.ErrorResponse(message = GENERIC_ERROR)
+        }
+    }
+
+    override suspend fun update(id: Int, storyParams: StoryParams): BaseResponse<Any> {
+        if (storyService.update(id, storyParams)) {
+            return BaseResponse.SuccessResponse(data = null, message = SUCCESS)
+        }
+        return BaseResponse.ErrorResponse(message = GENERIC_ERROR)
+    }
+
+    override suspend fun delete(storyId: Int): BaseResponse<Any> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun like(userId: Int, storyId: Int) {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun comment(userId: Int, comment: String) {
+        TODO("Not yet implemented")
+    }
+}

@@ -6,6 +6,7 @@ import io.ktor.jackson.*
 import net.simplifiedcoding.data.db.DatabaseFactory
 import net.simplifiedcoding.di.RepositoryProvider
 import net.simplifiedcoding.routes.auth.authRoutes
+import net.simplifiedcoding.routes.story.storyRoutes
 import net.simplifiedcoding.routes.user.userRoutes
 
 fun configureDatabase() {
@@ -21,4 +22,5 @@ fun Application.configureContentNegotiation() {
 fun Application.configureRouting(){
     authRoutes(RepositoryProvider.provideAuthRepository())
     userRoutes(RepositoryProvider.provideUserRepository())
+    storyRoutes(RepositoryProvider.provideStoryRepository())
 }
