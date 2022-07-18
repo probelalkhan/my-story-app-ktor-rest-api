@@ -6,14 +6,26 @@ import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
 import net.simplifiedcoding.data.repository.story.StoryRepository
+import net.simplifiedcoding.routes.DEFAULT_LIMIT_SIZE
+import net.simplifiedcoding.routes.DEFAULT_PAGE_START
 
 fun Application.storyRoutes(repository: StoryRepository) {
     routing {
         authenticate {
             route("story") {
 
-                get("all") {
+                get("my/{page}") {
+                    val page = call.parameters["page"]?.toIntOrNull() ?: DEFAULT_PAGE_START
+                    val limit = call.request.queryParameters["limit"]?.toIntOrNull() ?: DEFAULT_LIMIT_SIZE
+                    val result = repository.getAllStories(page, limit)
+                    call.respond(result.statusCode, result)
+                }
 
+                get("all/{page}") {
+                    val page = call.parameters["page"]?.toIntOrNull() ?: DEFAULT_PAGE_START
+                    val limit = call.request.queryParameters["limit"]?.toIntOrNull() ?: DEFAULT_LIMIT_SIZE
+                    val result = repository.getAllStories(page, limit)
+                    call.respond(result.statusCode, result)
                 }
 
                 post("add") {
@@ -29,9 +41,15 @@ fun Application.storyRoutes(repository: StoryRepository) {
                     call.respond(result.statusCode, result)
                 }
 
-                delete("delete/{id}"){
+                delete("delete/{id}") {
                     val id = call.parameters["id"]?.toIntOrNull() ?: -1
                     val result = repository.delete(id)
+                    call.respond(result.statusCode, result)
+                }
+
+                get("{story_id}/comments") {
+                    val storyId = call.parameters["story_id"]?.toIntOrNull() ?: -1
+                    val result = repository.getComments(storyId)
                     call.respond(result.statusCode, result)
                 }
             }
