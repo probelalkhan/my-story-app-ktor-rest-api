@@ -1,0 +1,1 @@
+rootProject.name = "net.simplifiedcoding.my-story-app"
